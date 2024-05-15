@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ReactTodos</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <!-- include Babel for Jsx transformation -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    function Todolist(){
+        const [Todos,setTodos]=React.useState([])
+        const [newtodo,setNewtodo]=React.useState({
+          task:"",
+          completed:false
+        })
+        function handleChange(event){
+            let TragetId=event.target.id 
+            let value=TragetId==="completed"?event.target.checked:event.target.value;
+         setNewtodo({
+            ...newtodo,
+            [TragetId]:value
+        })
+       }
+       function handleAdd(event){
+           event.preventDefault()
+           setTodos([...Todos,newtodo])
+           setNewtodo({
+            task:"",
+            completed:false
+           })
+       }
+       function handleDelete(index){
+        let updateArray=[...Todos]
+        updateArray.splice(index,1)
+        setTodos(updateArray)
+       }
+        return(
+            <>
+            <div>
+                <form action="" onSubmit={handleAdd}>
+                    <input type="text" placeholder="Add task" id="task" value={newtodo.task}onChange={handleChange}/>
+                    <label>
+                        completed: <input type="checkbox" id="completed" onChange={handleChange}/>
+                        </label>
+                        <button id="submit">Add</button>
+                        </form>
+                        <ul>
+                            {Todos.map((e,index)=>(
+                                <div key={index}>
+                                    <li>{e.task}</li>
+                                    <li style={{textDecoration:e.completed?'line-through':'none'}}>{e.completed?"Yes":"No"}</li>
+                                    <button onClick={handleDelete}>Delete</button>
+                                    </div>
+                                ))}
+                                </ul>
+                        </div>
+            </>
+        )
+    }
+    ReactDOM.createRoot(document.getElementById('root')).render(<Todolist/>)
+  </script>
+</html>
